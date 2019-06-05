@@ -1,9 +1,6 @@
-
+include("materials.jl")
 module pipes
 import NLsolve
-import Substances
-
-const subst = Substances
 
 struct pipe{T<:Real}
     length::T
@@ -84,10 +81,10 @@ props40_by_nominal_diameter = Dict(zip(valid_pipe_diams, schedule40_props))
 
 schedule_props = Dict("40" => props40_by_nominal_diameter)
 
-pipe_materials = Dict("Stainless Steel" => subst.ss_mat,
-                      "Copper"          => subst.cu_mat)
+pipe_materials = Dict("Stainless Steel" => ss_mat,
+                      "Copper"          => cu_mat)
 
-function pipe(schedule_info::Tuple, mat::subst.material, l, Δz)
+function pipe(schedule_info::Tuple, mat::material, l, Δz)
   # schedule_info is a Tuple: the schedule number comes first and the nominal
   # diameter comes second
   props = schedule_props[schedule_info[1]][schedule_info[2]]
@@ -114,6 +111,6 @@ function getf(Re, p::pipes.pipe)
     return NLsolve.nlsolve(dummysolve!, [0.001]).zero[1]
 end
 
-tube = pipe(("40", 1.0), subst.ss_mat, 0.8, 0.0)
+tube = pipe(("40", 1.0), ss_mat, 0.8, 0.0)
 
 end # ends pipes module
