@@ -1,8 +1,10 @@
-#pipes.jl
-include("substances.jl")
+
 module pipes
 import NLsolve
-import subst
+import Substances
+
+const subst = Substances
+
 struct pipe{T<:Real}
     length::T
     diameter::T
